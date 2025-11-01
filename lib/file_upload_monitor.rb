@@ -6,5 +6,6 @@ require 'sidekiq'
 module FileUploadMonitor
 end
 
-# Load the worker
+# Load components
 require_relative 'file_upload_monitor/file_upload_worker'
+require_relative 'file_upload_monitor/file_detector'
