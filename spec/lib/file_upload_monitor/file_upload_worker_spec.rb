@@ -9,6 +9,7 @@ RSpec.describe FileUploadMonitor::FileUploadWorker do
   describe '.perform' do
     context 'with valid file path' do
       before do
+        allow(File).to receive(:exist?).and_call_original
         allow(File).to receive(:exist?).with(valid_file_path).and_return(true)
       end
 
@@ -21,6 +22,7 @@ RSpec.describe FileUploadMonitor::FileUploadWorker do
 
     context 'with invalid file path' do
       before do
+        allow(File).to receive(:exist?).and_call_original
         allow(File).to receive(:exist?).with(invalid_file_path).and_return(false)
       end
 
