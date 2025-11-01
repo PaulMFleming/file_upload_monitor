@@ -4,7 +4,6 @@ require 'logger'
 require 'sidekiq'
 
 module FileUploadMonitor
-
 end
 
 # Load the worker
