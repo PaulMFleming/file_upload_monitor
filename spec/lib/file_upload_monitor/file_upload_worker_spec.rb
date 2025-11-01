@@ -52,6 +52,7 @@ RSpec.describe FileUploadMonitor::FileUploadWorker do
 
   describe 'job processing' do
     it 'processed queued jobs when drained' do
+      allow(File).to receive(:exist?).and_call_original
       allow(File).to receive(:exist?).with(valid_file_path).and_return(true)
       expect_any_instance_of(Logger).to receive(:info).with("Processing file: #{valid_file_path}")
 
