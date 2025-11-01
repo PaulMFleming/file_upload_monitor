@@ -6,7 +6,9 @@ RSpec.describe FileUploadMonitor::FileUploadWorker do
   let(:valid_file_path) { '/tmp/test_file.txt' }
   let(:invalid_file_path) { '/nonexistent/file.txt' }
 
-  describe '.perform' do
+  describe '#perform' do
+    let(:worker) { described_class.new }
+
     context 'with valid file path' do
       before do
         allow(File).to receive(:exist?).and_call_original
@@ -16,7 +18,7 @@ RSpec.describe FileUploadMonitor::FileUploadWorker do
       it 'logs processing message at info level' do
         expect_any_instance_of(Logger).to receive(:info).with("Processing file: #{valid_file_path}")
 
-        described_class.perform(valid_file_path)
+        worker.perform(valid_file_path)
       end
     end
 
@@ -29,7 +31,7 @@ RSpec.describe FileUploadMonitor::FileUploadWorker do
       it 'logs error message' do
         expect_any_instance_of(Logger).to receive(:error).with("File not found: #{invalid_file_path}")
 
-        described_class.perform(invalid_file_path)
+        worker.perform(invalid_file_path)
       end
     end
   end

@@ -4,7 +4,7 @@ module FileUploadMonitor
   class FileUploadWorker
     include Sidekiq::Worker
 
-    def self.perform(file_path)
+    def perform(file_path)
       logger = Logger.new($stdout)
 
       if File.exist?(file_path)
