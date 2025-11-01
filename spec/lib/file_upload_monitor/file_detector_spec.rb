@@ -25,5 +25,25 @@ RSpec.describe FileUploadMonitor::FileDetector do
 
     expect(FileUploadMonitor::FileUploadWorker.jobs.last['args']).to eq([test_file])
     end
+
+    it 'does not queue jobs for previously processed files' do
+      expect {
+        detector.scan_for_new_files
+      }.to change(FileUploadMonitor::FileUploadWorker.jobs, :size).by(1)
+
+      expect {
+        detector.scan_for_new_files
+      }.not_to change(FileUploadMonitor::FileUploadWorker.jobs, :size)
+    end
+
+    it 'stores processed file paths in Redis' do
+      redis_client = instance_double(Redis)
+      allow(Redis).to receive(:new).and_return(redis_client)
+
+      expect(redis_client).to receive(:sadd).with('processed_files', test_file)
+      expect(redis_client).to receive(:sismember).with('processed_files', test_file).and_return(false)
+
+      detector.scan_for_new_files
+    end
   end
 end
