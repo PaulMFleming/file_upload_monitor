@@ -26,9 +26,9 @@ RSpec.describe FileUploadMonitor::FileDetector do
     it 'queues FileUploadWorker jobs for each file' do
       expect {
         detector.scan_for_new_files
-    }.to change(FileUploadMonitor::FileUploadWorker.jobs, :size).by(1)
+      }.to change(FileUploadMonitor::FileUploadWorker.jobs, :size).by(1)
 
-    expect(FileUploadMonitor::FileUploadWorker.jobs.last['args']).to eq([test_file])
+      expect(FileUploadMonitor::FileUploadWorker.jobs.last['args']).to eq([test_file])
     end
 
     it 'does not queue jobs for previously processed files' do
