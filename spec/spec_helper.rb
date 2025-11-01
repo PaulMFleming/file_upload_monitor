@@ -4,9 +4,13 @@ require 'dotenv/load'
 require 'rspec'
 require 'pry'
 require 'logger'
+require 'sidekiq/testing'
 
 # Load our application
 require_relative '../lib/file_upload_monitor'
+
+# Configure Sidekiq for testing
+Sidekiq::Testing.fake!
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
@@ -18,4 +22,8 @@ RSpec.configure do |config|
   end
 
   config.shared_context_metadata_behavior = :apply_to_host_groups
+
+  config.before(:each) do
+    Sidekiq::Worker.clear_all
+  end
 end
