@@ -33,4 +33,18 @@ RSpec.describe FileUploadMonitor::FileUploadWorker do
       end
     end
   end
+
+  describe '.perform_async' do
+    it 'enqueus a job in Sidekiq' do
+      expect {
+        described_class.perform_async(valid_file_path)
+    }.to change(described_class.jobs, :size).by(1)
+    end
+
+    it 'enqueues with correct arguements' do
+      described_class.perform_async(valid_file_path)
+
+      expect(described_class.jobs.last['args']).to eq([valid_file_path])
+    end
+  end
 end
