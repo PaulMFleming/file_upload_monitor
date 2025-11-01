@@ -2,6 +2,7 @@
 
 require 'logger'
 require 'sidekiq'
+require 'redis'
 
 module FileUploadMonitor
 end
