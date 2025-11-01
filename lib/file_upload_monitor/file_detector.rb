@@ -12,14 +12,14 @@ module FileUploadMonitor
       new_files = []
 
       files.each do |file_path|
-        unless @redis.sismember('processed_files', file_path)
-          FileUploadMonitor::FileUploadWorker.perform_async(file_path)
-          @redis.sadd("processed_files", file_path)
-          new_files << file_path
-        end
-     end
+        next if @redis.sismember('processed_files', file_path)
 
-     files
+        FileUploadMonitor::FileUploadWorker.perform_async(file_path)
+        @redis.sadd('processed_files', file_path)
+        new_files << file_path
+      end
+
+      files
     end
   end
 end
