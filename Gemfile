@@ -16,7 +16,7 @@ gem 'dotenv'
 group :development, :test do
   gem 'rspec'
   gem 'fabrication'
-  gem 'database-cleaner-sequel'
+  gem 'database_cleaner-sequel'
   gem 'rubocop'
   gem 'pry'
   gem 'pry-byebug'
