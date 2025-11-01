@@ -5,6 +5,7 @@ require 'rspec'
 require 'pry'
 require 'logger'
 require 'sidekiq/testing'
+require 'redis'
 
 # Load our application
 require_relative '../lib/file_upload_monitor'
