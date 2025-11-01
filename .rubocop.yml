@@ -8,3 +8,22 @@
 # where the inspected file is and continue its way up to the root directory.
 #
 # See https://docs.rubocop.org/rubocop/configuration
+
+AllCops:
+  NewCops: enable
+  SuggestExtensions: false
+  TargetRubyVersion: 3.3
+
+# Disable documentation requirement for learning project
+Style/Documentation:
+  Enabled: false
+
+# Allow longer blocks in specs
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*"
+
+# RSpec-specific configurations
+Style/BlockDelimiters:
+  Exclude:
+    - "spec/**/*"

@@ -1,25 +1,27 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 ruby '3.3.0'
 
 # Core application
-gem 'sequel'
-gem 'pg'
-gem 'sidekiq'
-gem 'redis'
 gem 'aws-sdk-s3'
+gem 'pg'
+gem 'redis'
+gem 'sequel'
+gem 'sidekiq'
 
 # Config
 gem 'dotenv'
 
 # Development and testing
 group :development, :test do
-  gem 'rspec'
-  gem 'fabrication'
   gem 'database_cleaner-sequel'
-  gem 'rubocop'
+  gem 'fabrication'
   gem 'pry'
   gem 'pry-byebug'
+  gem 'rspec'
+  gem 'rubocop'
 end
 
 group :development do
