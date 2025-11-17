@@ -79,13 +79,13 @@ RSpec.describe FileUploadMonitor::FileUploadWorker do
       end
 
       it 'logs error message when file not found' do
-        non_existant_file = '/tmp/does_not_exist.txt'
+        non_existent_file = '/tmp/does_not_exist.txt'
         worker = FileUploadMonitor::FileUploadWorker.new
 
-        expect_any_instance_of(Logger).to receive(:error).with("File not found: #{non_existant_file}")
+        expect_any_instance_of(Logger).to receive(:error).with("File not found: #{non_existent_file}")
 
         expect {
-          worker.perform(non_existant_file)
+          worker.perform(non_existent_file)
       }.to raise_error(FileUploadMonitor::FileNotFoundError)
       end
     end
