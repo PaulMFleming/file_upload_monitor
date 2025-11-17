@@ -19,12 +19,11 @@ RSpec.describe 'File Processing Pipeline', type: :integration do
   it 'detects files and processes them end-to-end' do
     detector = FileUploadMonitor::FileDetector.new(temp_dir)
 
+    expect_any_instance_of(Logger).to receive(:info).with("Processing file: #{test_file_path}")
+
     expect {
       detector.scan_for_new_files
     }.to change(FileUploadMonitor::FileUploadWorker.jobs, :size).by(1)
-
-    expect_any_instance_of(Logger).to receive(:info).with("Processing file: #{test_file_path}")
-
     FileUploadMonitor::FileUploadWorker.drain
   end
 end
