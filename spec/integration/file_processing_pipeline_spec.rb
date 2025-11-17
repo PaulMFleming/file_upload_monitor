@@ -16,7 +16,7 @@ RSpec.describe 'File Processing Pipeline', type: :integration do
     FileUtils.rm_rf(temp_dir)
   end
 
-  it 'detects files and processes then end-to-end' do
+  it 'detects files and processes them end-to-end' do
     detector = FileUploadMonitor::FileDetector.new(temp_dir)
 
     expect {
