@@ -21,10 +21,10 @@ RSpec.describe 'File Processing Pipeline', type: :integration do
 
     expect {
       detector.scan_for_new_files
-  }.to change(FileUploadMonitor::FileUploadWorker.jobs, :size).by(1)
+    }.to change(FileUploadMonitor::FileUploadWorker.jobs, :size).by(1)
 
-  expect_any_instance_of(Logger).to receive(:info).with("Processing file: #{test_file_path}")
+    expect_any_instance_of(Logger).to receive(:info).with("Processing file: #{test_file_path}")
 
-  FileUploadMonitor::FileUploadWorker.drain
+    FileUploadMonitor::FileUploadWorker.drain
   end
 end
