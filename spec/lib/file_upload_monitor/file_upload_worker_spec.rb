@@ -28,10 +28,12 @@ RSpec.describe FileUploadMonitor::FileUploadWorker do
         allow(File).to receive(:exist?).with(invalid_file_path).and_return(false)
       end
 
-      it 'logs error message' do
+      it 'logs error message and raises exception' do
         expect_any_instance_of(Logger).to receive(:error).with("File not found: #{invalid_file_path}")
 
-        worker.perform(invalid_file_path)
+        expect { 
+          worker.perform(invalid_file_path)
+      }.to raise_error(FileUploadMonitor::FileNotFoundError)
       end
     end
   end
@@ -63,18 +65,17 @@ RSpec.describe FileUploadMonitor::FileUploadWorker do
 
   describe 'job retry behaviour' do
     describe 'file not found retries' do
-      it 'retries up to 5 times when file does not exist' do
+      it 'is configured to retry 5 times' do
+        expect(described_class.sidekiq_options['retry']).to eq(5)
+      end
+
+      it 'raises FileNotFoundError when file does not exist' do
         non_existent_file = '/tmp/does_not_exist.txt'
-
-        expect(FileUploadMonitor::FileUploadWorker).to receive(:sidekiq_options).with(retry: 5)
-
-        worker = FileUploadMonitor::FileUploadWorker.new
+        worker = described_class.new
 
         expect {
           worker.perform(non_existent_file)
         }.to raise_error(FileUploadMonitor::FileNotFoundError)
-
-        expect(Sidekiq::RetrySet.new.size).to eq(1)
       end
 
       it 'logs error message when file not found' do
