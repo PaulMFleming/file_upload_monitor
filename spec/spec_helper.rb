@@ -5,6 +5,7 @@ require 'rspec'
 require 'pry'
 require 'logger'
 require 'sidekiq/testing'
+require 'sidekiq/api'
 require 'redis'
 
 # Load our application
@@ -26,5 +27,6 @@ RSpec.configure do |config|
 
   config.before(:each) do
     Sidekiq::Worker.clear_all
+    Sidekiq::RetrySet.new.clear
   end
 end
